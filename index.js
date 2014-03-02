@@ -8,13 +8,13 @@ module.exports = LogglyStream;
 util.inherits(LogglyStream, Writable);
 
 function LogglyStream (options) {
+  var json = options.json !== false;
+
   if (!(this instanceof LogglyStream)) { return new LogglyStream(options) }
   Writable.call(this,
-      extend({ decodeStrings: false, objectMode: true}, options));
-  //
-  // Remark: we are assuming object streams here so JSON is true
-  //
-  options = extend(options, { json: true });
+      extend({ decodeStrings: false, objectMode: json}, options));
+
+  options = extend(options, { json: json });
   this.loggly = loggly.createClient(options);
 
 };
